@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-navigation';
 import Snackbar from 'react-native-snackbar';
-
+let url = "http://13.229.75.231/pub/media/catalog/product/";
 export default class Products extends React.Component {
   constructor(props) {
     super(props);
@@ -34,13 +34,14 @@ export default class Products extends React.Component {
         var data = response[1];
         console.log(statusCode);
         if (statusCode == 200) {
-          console.log(data);
-          let DATA = [];
-          for (var i = 0; i < data.items.length; i++) {
-            DATA.push(data.items[i]);
-          }
-          this.setState({DATA});
-          
+          let temp1 = []
+          let DATA = data.items
+          let temp = DATA.map(obj => {
+            obj.thumbnail = this.APIfiler(obj.custom_attributes, "thumbnail");
+            temp1.push(obj)
+          })
+          this.setState({ DATA });
+          console.log(DATA)
         } else {
           Snackbar.show({
             title: "dj",
@@ -51,7 +52,12 @@ export default class Products extends React.Component {
       .catch((error) => {
         console.error(error);
       });
-
+  }
+  APIfiler(data, key) {
+    let image = data.filter(obj => {
+      return obj.attribute_code == key
+    })
+    return image[0].value
   }
 
   Item({ data }) {
@@ -59,40 +65,40 @@ export default class Products extends React.Component {
       <View style={{
         backgroundColor: '#fff', marginLeft: 20, marginTop: 10,
       }}>
-        <TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8}>
           <View style={{
-            height: 280, width: 180, backgroundColor: '', borderRadius: 10,
+            height: 250, width: 180, backgroundColor: '', borderRadius: 10,
           }}>
             <Image
-              source={data.custom_attributes[3].value}
-              
+              source={{ uri: url + data.thumbnail }}
               style={{ height: "100%", width: "100%", borderTopRightRadius: 10, borderTopLeftRadius: 10, flex: 1 }}
             />
-            {console.log(data.custom_attributes[3])}
             <View style={{
               position: 'absolute', top: 0, left: 0, backgroundColor: '#FE6963', justifyContent: 'center',
               height: 22, width: 40, borderTopLeftRadius: 5
             }}>
               <Text style={{ fontSize: 12, fontWeight: '600', color: '#fff', textAlign: 'center' }}>35%</Text>
             </View>
-            <TouchableOpacity style={{ position: 'absolute', top: 3, right: 5, }}>
+            <TouchableOpacity style={{ position: 'absolute', top: 3, right: 5}}>
               <Icon
                 style={{}}
                 name="md-heart"
                 size={20}
-                color="#fff"
+                color={(data.extension_attributes.is_wishlist_product)? "#fff" : "red"}
               />
+              {(data.extension_attributes.is_wishlist_product)}
             </TouchableOpacity>
             <View>
               <Text style={{ fontSize: 15, fontWeight: 'bold', paddingTop: 5, paddingLeft: 1 }} numberOfLines={1} ellipsizeMode='middle'>{data.name}</Text>
-          <Text style={{ fontSize: 17, fontWeight: 'bold', paddingTop: 2, paddingLeft: 1, color: 'red' }}>{data.price}</Text>
+              <Text style={{ fontSize: 17, fontWeight: 'bold', paddingTop: 2, paddingLeft: 1, color: 'red' }}>${(data.price.toFixed(2))}</Text>
               <View style={{
-                position: 'absolute', bottom: 0, right: 0, backgroundColor: 'green',
-                height: 20, width: 43, borderRadius: 5, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'
+                position: 'absolute', bottom: 1, right: 0, backgroundColor: 'green',
+                height: 19, width: 43, borderRadius: 5, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'
               }}>
-                <Text style={{ fontSize: 12, fontWeight: '800', color: '#fff', textAlign: 'left', paddingLeft: 5 }}>2.8</Text>
+                <Text style={{ fontSize: 12, fontWeight: '800', color: '#fff', textAlign: 'left', paddingLeft: 5 }}>
+                  {(data.extension_attributes.avg_rating / 20).toFixed(1)}</Text>
                 <Icon
-                  style={{ paddingRight: 3, }}
+                  style={{ paddingRight: 3, paddingTop: 1 }}
                   name="md-star"
                   size={14}
                   color="#fff"
@@ -105,7 +111,6 @@ export default class Products extends React.Component {
       </View>
     );
   }
-
   render() {
     return (
       <SafeAreaView style={{}}>
@@ -130,10 +135,9 @@ export default class Products extends React.Component {
                 size={20}
                 color="#6f7587"
               />
-              {console.log(this.state.DATA)}
               <Text style={{ paddingLeft: 10, color: '#6f7587' }}>Filter</Text>
             </TouchableOpacity>
-            
+
 
           </View>
           <View style={{ backgroundColor: '#fff', }}>
