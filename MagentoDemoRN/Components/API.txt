@@ -1,0 +1,90 @@
+Categories:
+ path: http://13.229.75.231/rest/V1/categories
+Request param nil
+GET
+
+===================
+
+Product:
+GET
+Request param nil
+path: http://13.229.75.231/rest/default/V1/products?storeId=1&searchCriteria[filterGroups][0][filters][0][conditionType]=eq&searchCriteria[filterGroups][1][filters][0][field]=status&searchCriteria[filterGroups][1][filters][0][value]=1&searchCriteria[filterGroups][1][filters][0][conditionType]=eq&searchCriteria[filterGroups][2][filters][0][field]=visibility&searchCriteria[filterGroups][2][filters][0][conditionType]=neq&searchCriteria[filterGroups][2][filters][0][value]=1&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[filterGroups][0][filters][0][value]=3&currencyCode=USD&searchCriteria[currentPage]=1&searchCriteria[filterGroups][0][filters][0][field]=category_id&searchCriteria[pageSize]=10
+
+====================
+
+Sort:
+ path: http://13.229.75.231/rest/default/V1/products/attributes?searchCriteria[filterGroups][0][filters][0][value]=1&searchCriteria[filterGroups][0][filters][0][field]=used_for_sort_by
+Request param nil
+GET
+
+Filetr
+http://13.229.75.231/rest/default/V1/products/attributes?searchCriteria[filterGroups][0][filters][0][value]=1&searchCriteria[filterGroups][0][filters][0][field]=is_filterable
+Request param nil
+GET
+
+
+
+
+get
+
+ki service h
+
+also header m token jayga jo login m aya tha
+
+ let headers = [
+                "Authorization": "Bearer " + UserDefaults().string(forKey: kTokenKey)!
+            ]
+            request.headers = headers
+
+Product:
+http://13.229.75.231/rest/default/V1/products?storeId=1&searchCriteria[filterGroups][0][filters][0][conditionType]=eq&searchCriteria[filterGroups][1][filters][0][field]=status&searchCriteria[filterGroups][1][filters][0][value]=1&searchCriteria[filterGroups][1][filters][0][conditionType]=eq&searchCriteria[filterGroups][2][filters][0][field]=visibility&searchCriteria[filterGroups][2][filters][0][conditionType]=neq&searchCriteria[filterGroups][2][filters][0][value]=1&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[filterGroups][0][filters][0][value]=9&currencyCode=USD&searchCriteria[currentPage]=1&searchCriteria[filterGroups][0][filters][0][field]=category_id&searchCriteria[pageSize]=10
+
+get
+
+request params nil
+
+token in header
+
+Cart list:
+http://13.229.75.231/rest/default/V1/guest-carts/1d06f17e31e6781d4b580cb6a6cde689
+
+
+
+
+http://13.229.75.231/rest/default/V1/magento/dashboard
+
+request m kuch nhi jayga dashboard ki 
+
+
+
+
+      http://13.229.75.231/
+
+Login:  rest/V1/magento/customer/login
+Register:  rest/V1/ranosys/customer/register
+Email available:  rest/V1/customers/isEmailAvailable
+Forgot password:  rest/V1/customers/password
+Change password:  rest/V1/customers/me/password
+
+http://13.229.75.231/rest/V1/magento/customer/login
+
+Login request params:
+["username": " ", "quote_id": " ", "password": " "]
+
+Register:
+["customer": {
+    email = "hemlata+101@ranosys.com";
+    firstname = Hemlata;
+    "group_id" = 1;
+    id = 0;
+    lastname = Khajanchi;
+    "mask_id" = "";
+    middlename = "";
+    password = "Pass@123";
+    "profile_image" = "";
+    "quote_count" = 0;
+    "quote_id" = 0;
+    "store_id" = 1;
+    token = "";
+    "website_id" = 1;
+}]

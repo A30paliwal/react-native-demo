@@ -79,12 +79,12 @@ export default class Products extends React.Component {
             }}>
               <Text style={{ fontSize: 12, fontWeight: '600', color: '#fff', textAlign: 'center' }}>35%</Text>
             </View>
-            <TouchableOpacity style={{ position: 'absolute', top: 3, right: 5}}>
+            <TouchableOpacity style={{ position: 'absolute', top: 3, right: 5 }}>
               <Icon
                 style={{}}
                 name="md-heart"
                 size={20}
-                color={(data.extension_attributes.is_wishlist_product)? "#fff" : "red"}
+                color={(data.extension_attributes.is_wishlist_product) ? "#fff" : "red"}
               />
               {(data.extension_attributes.is_wishlist_product)}
             </TouchableOpacity>
@@ -114,41 +114,40 @@ export default class Products extends React.Component {
   render() {
     return (
       <SafeAreaView style={{}}>
-        <ScrollView>
-          <View style={{
-            width: Dimensions.get('window').width,
-            height: 40, flexDirection: 'row', backgroundColor: ''
-          }}>
-            <TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Icon
-                style={{}}
-                name="md-funnel"
-                size={20}
-                color="#6f7587"
-              />
-              <Text style={{ paddingLeft: 10, color: '#6f7587' }}>Sort By</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Icon
-                style={{}}
-                name="md-options"
-                size={20}
-                color="#6f7587"
-              />
-              <Text style={{ paddingLeft: 10, color: '#6f7587' }}>Filter</Text>
-            </TouchableOpacity>
 
-
-          </View>
-          <View style={{ backgroundColor: '#fff', }}>
-            <FlatList
-              data={this.state.DATA}
-              renderItem={({ item }) => { return this.Item({ data: item }); }}
-              keyExtractor={(item, index) => `products_${index}`}
-              numColumns={2}
+        <View style={{
+          width: Dimensions.get('window').width,
+          height: 40, flexDirection: 'row', backgroundColor: ''
+        }}>
+          <TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Icon
+              style={{}}
+              name="md-funnel"
+              size={20}
+              color="#6f7587"
             />
-          </View>
-        </ScrollView>
+            <Text style={{ paddingLeft: 10, color: '#6f7587' }}>Sort By</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Icon
+              style={{}}
+              name="md-options"
+              size={20}
+              color="#6f7587"
+            />
+            <Text style={{ paddingLeft: 10, color: '#6f7587' }}>Filter</Text>
+          </TouchableOpacity>
+
+
+        </View>
+        <View style={{ backgroundColor: '#fff', }}>
+          <FlatList
+            data={this.state.DATA}
+            renderItem={({ item }) => { return this.Item({ data: item }); }}
+            keyExtractor={(item, index) => `products_${index}`}
+            numColumns={2}
+          />
+        </View>
       </SafeAreaView>
     );
   }
