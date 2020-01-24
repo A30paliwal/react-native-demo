@@ -63,11 +63,19 @@ export default class Products extends React.Component {
   Item({ data }) {
     return (
       <View style={{
-        backgroundColor: '#fff', marginLeft: 20, marginTop: 10,
+        backgroundColor: '#fff', marginLeft: 20, marginTop: 15,shadowColor: "#0005",
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 3.84,
+        elevation: 2,
+        borderRadius:10
       }}>
         <TouchableOpacity activeOpacity={0.8}>
           <View style={{
-            height: 250, width: 180, backgroundColor: '', borderRadius: 10,
+            height: (Dimensions.get('window').width/2.3)*1.39, width: Dimensions.get('window').width/2.34, backgroundColor: '', borderRadius: 10,
           }}>
             <Image
               source={{ uri: url + data.thumbnail }}
@@ -89,10 +97,10 @@ export default class Products extends React.Component {
               {(data.extension_attributes.is_wishlist_product)}
             </TouchableOpacity>
             <View>
-              <Text style={{ fontSize: 15, fontWeight: 'bold', paddingTop: 5, paddingLeft: 1 }} numberOfLines={1} ellipsizeMode='middle'>{data.name}</Text>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', paddingTop: 5, marginHorizontal: 2 }} numberOfLines={1} ellipsizeMode='middle'>{data.name}</Text>
               <Text style={{ fontSize: 17, fontWeight: 'bold', paddingTop: 2, paddingLeft: 1, color: 'red' }}>${(data.price.toFixed(2))}</Text>
               <View style={{
-                position: 'absolute', bottom: 1, right: 0, backgroundColor: 'green',
+                position: 'absolute', bottom: 3, right: 3, backgroundColor: 'green',
                 height: 19, width: 43, borderRadius: 5, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center'
               }}>
                 <Text style={{ fontSize: 12, fontWeight: '800', color: '#fff', textAlign: 'left', paddingLeft: 5 }}>
@@ -111,9 +119,12 @@ export default class Products extends React.Component {
       </View>
     );
   }
+  listFooterView = () => {
+   return <View style={{marginBottom:15}}></View>
+  }
   render() {
     return (
-      <SafeAreaView style={{}}>
+      <SafeAreaView style={{flex:1}}>
 
         <View style={{
           width: Dimensions.get('window').width,
@@ -128,7 +139,9 @@ export default class Products extends React.Component {
             />
             <Text style={{ paddingLeft: 10, color: '#6f7587' }}>Sort By</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            onPress={()=>{this.props.navigation.push('filter')}}
+          >
             <Icon
               style={{}}
               name="md-options"
@@ -140,12 +153,14 @@ export default class Products extends React.Component {
 
 
         </View>
-        <View style={{ backgroundColor: '#fff', }}>
+        <View style={{ backgroundColor: '#fff', flex:1}}>
           <FlatList
+            style={{}}
             data={this.state.DATA}
             renderItem={({ item }) => { return this.Item({ data: item }); }}
             keyExtractor={(item, index) => `products_${index}`}
             numColumns={2}
+            ListFooterComponent={this.listFooterView}
           />
         </View>
       </SafeAreaView>

@@ -62,7 +62,7 @@ export default class Login extends Component {
           //   isLoading:false,
           // })
           this.storeData(data)
-          this.props.navigation.navigate('dashboard');
+          this.props.navigation.navigate('App');
         } else {
           Snackbar.show({
             title: data.message,

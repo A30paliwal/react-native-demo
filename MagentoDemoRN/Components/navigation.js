@@ -8,14 +8,16 @@ import Login from './login';
 import Register from './register';
 import Dashboard from './dashboard';
 import Categories from './categories';
+import FilterModal from './filter';
 import MyOrders from './myOrders';
 import Wishlist from './wishlist';
 import Account from './account';
 import Settings from './settings';
 import Products from './products';
 import SideMenu from './sidemenu';
+import SplashScreen from './splash';
 
-const AppNavigator = createStackNavigator(
+const AuthNavigator = createStackNavigator(
     {
         login: {
             screen: Login,
@@ -29,6 +31,13 @@ const AppNavigator = createStackNavigator(
                 headerShown: false,
             }
         },
+    },
+    {
+        initialRouteName: 'login',
+    }
+);
+const DashboardStackNavigator = createStackNavigator(
+    {
         dashboard: {
             screen: Dashboard,
             navigationOptions: {
@@ -36,10 +45,11 @@ const AppNavigator = createStackNavigator(
                 headerShown: true,
                 headerTintColor: "#fff",
                 headerStyle: {
-                    backgroundColor: '#FE6963'
+                    backgroundColor: '#FE6963',
                 },
+                headerTitleAlign: 'center',
                 headerTitleStyle: {
-                    fontSize: 20
+                    fontSize: 22
                 },
                 headerRight: () => (
                     headerRightView()
@@ -63,9 +73,6 @@ const AppNavigator = createStackNavigator(
             };
         }
     },
-    {
-        initialRouteName: 'login',
-    }
 );
 const CategoryStackNavigator = createStackNavigator(
     {
@@ -100,20 +107,12 @@ const CategoryStackNavigator = createStackNavigator(
 );
 const ProductStackNavigator = createStackNavigator(
     {
-        Categories: Products
-    },
-    {
-        defaultNavigationOptions: ({ navigation }) => {
-            return {
-                title: "PRODUCTS",
-                headerTintColor: "#fff",
-                headerStyle: {
-                    backgroundColor: '#FE6963'
-                },
-                headerTitleStyle: {
-                    fontSize: 20
-                },
-                headerLeft: () => (
+        products: {
+            screen: Products,
+            navigationOptions: {
+                title: "Products",
+                headerShown: true,
+                headerLeft: ({navigation}) => (
                     <Icon
                         style={{ paddingLeft: 10 }}
                         onPress={() => navigation.openDrawer()}
@@ -125,13 +124,50 @@ const ProductStackNavigator = createStackNavigator(
                 headerRight: () => (
                     headerRightView()
                 )
+            }
+
+        },
+        filter: {
+            screen: FilterModal,
+            navigationOptions: {
+                
+                title: "Filter",
+                headerShown: true,
+                headerRight: ({navigation}) => (
+                    <Icon
+                        style={{ paddingLeft: 10 }}
+                        onPress={() => navigation.goBack()}
+                        name="md-close-circle"
+                        size={30}
+                        color="#fff"
+                    />
+                )
+            }
+        }
+    },
+    {
+        mode: 'modal',
+        defaultNavigationOptions: ({ navigation }) => {
+            return {
+                headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: '#FE6963'
+                },
+                headerTitleAlign: 'center',
+                headerTitleStyle: {
+                    fontSize: 22
+                },
+
+                headerRight: () => (
+                    headerRightView()
+                )
             };
         }
     }
 );
 const CartStackNavigator = createStackNavigator(
     {
-        Categories: Wishlist
+        wishlist: Wishlist
     },
     {
         defaultNavigationOptions: ({ navigation }) => {
@@ -176,7 +212,7 @@ headerRightView = () => {
 const AppDrawerNavigator = createDrawerNavigator(
     {
         Home: {
-            screen: AppNavigator
+            screen: DashboardStackNavigator
         },
         Categories: {
             screen: CategoryStackNavigator,
@@ -209,49 +245,17 @@ const AppDrawerNavigator = createDrawerNavigator(
         // overlayColor:'#000'
         // edgeWidth:300
     },
-    // {  
-    //     defaultNavigationOptions: ({ navigation }) => {  
-    //         return {
-    //             headerShown:true,
-    //             headerLeft: (  
-    //                 <Icon  
-    //                     style={{ paddingLeft: 10 }}  
-    //                     onPress={() => navigation.openDrawer()}  
-    //                     name="md-menu"  
-    //                     size={30}  
-    //                 />  
-    //             )  
-    //         };  
-    //     }  
-    // },
-    // {
-    //     initialRouteName: 'Home',
-    // }
-);
-
-const AppStackNavigator = createStackNavigator({
-    Dashboard: { screen: AppDrawerNavigator },
-},
     {
-        defaultNavigationOptions: ({ navigation }) => {
-            return {
-                headerShown: false,
-                headerLeft: () => (
-                    <Icon
-                        style={{ paddingLeft: 10 }}
-                        onPress={() => navigation.openDrawer()}
-                        name="md-menu"
-                        size={30}
-                    />
-                )
-            };
-        }
-    },
-    {
-        initialRouteName: 'Dashboard',
+        initialRouteName: 'Home',
     }
 );
 
-const AppContainer = createAppContainer(AppStackNavigator);
+const InitialNavigator = createSwitchNavigator({
+    Splash: SplashScreen,
+    App: AppDrawerNavigator,
+    Auth: AuthNavigator
+});
+
+const AppContainer = createAppContainer(InitialNavigator);
 
 export default AppContainer

@@ -51,7 +51,8 @@ class SideMenu extends Component {
     this.state = {
       name: "",
       email: "",
-      userDetails: null
+      userDetails: null,
+      _isMounted: false
     }
   }
   navigateToScreen = (route) => () => {
@@ -61,9 +62,16 @@ class SideMenu extends Component {
     this.props.navigation.dispatch(navigateAction);
   }
   componentDidMount() {
-    this.getData()
-
+    this._isMounted = true;
+    this._isMounted && this.getData()
   }
+  componentWillUnmount() {
+    this._isMounted = false;
+ }
+  _signOutAsync = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
+  };
   Item = (title, icon, path) => (
     <TouchableOpacity activeOpacity={0.8} onPress={this.navigateToScreen(path)} style={{ backgroundColor: 'transparent', paddingBottom: 30, flexDirection: 'row' }}>
       <Icon
@@ -78,10 +86,10 @@ class SideMenu extends Component {
   getData = async () => {
     try {
       let value = await AsyncStorage.getItem('userData')
-      this.setState({ userDetails: JSON.parse(value) });
+      this._isMounted && this.setState({ userDetails: JSON.parse(value) });
       console.log(value)
       if (this.state.userDetails != null) {
-        this.setState({
+        this._isMounted && this.setState({
           name: this.state.userDetails.first_name + " " + this.state.userDetails.last_name,
           email: this.state.userDetails.email
         })

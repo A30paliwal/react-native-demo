@@ -165,7 +165,7 @@ export default class Register extends Component {
             keyboardShouldPersistTaps='handled'
             alwaysBounceVertical={false}>
             <View style={styles.container1}>
-              <TouchableOpacity style={styles.iconContainer}>
+              <TouchableOpacity style={styles.iconContainer} onPress={()=> this.props.navigation.goBack()}>
                 <Icon name="md-arrow-round-back" size={35} color="#fff" />
               </TouchableOpacity>
               <Text style={styles.textFirst}>
@@ -227,7 +227,7 @@ export default class Register extends Component {
                 onPress={this.func}>
                 <Text style={styles.buttonText}>REGISTER</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonContainer3}>
+              <TouchableOpacity style={styles.buttonContainer3} onPress={()=> this.props.navigation.goBack()}>
                 <Text style={styles.buttonText3}>Back to Login</Text>
               </TouchableOpacity>
 
