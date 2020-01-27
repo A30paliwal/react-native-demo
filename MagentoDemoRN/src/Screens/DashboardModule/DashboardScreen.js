@@ -12,22 +12,41 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ListDetail from '../CustomComponents/listDetail';
 let BASE_URL = "http://13.229.75.231/";
-let Media_BASE_URL= "pub/media";
-let CATEGORYMEDIA_BASE_URL= BASE_URL + "pub/media/catalog/category/";
-let PRODUCTMEDIA_BASE_URL= BASE_URL + "pub/media/catalog/product";
-let SLIDERMedia_BASE_URL= BASE_URL + "pub/media";
+let Media_BASE_URL = "pub/media";
+let CATEGORYMEDIA_BASE_URL = BASE_URL + "pub/media/catalog/category/";
+let PRODUCTMEDIA_BASE_URL = BASE_URL + "pub/media/catalog/product";
+let SLIDERMedia_BASE_URL = BASE_URL + "pub/media";
 
 
 export default class Dashboard extends Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            onPress={() => alert('This is a button!')}
+            style={{ paddingHorizontal: 10 }}>
+            <Icon name="md-search" size={30} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('cart')}
+            style={{ paddingHorizontal: 10 }}>
+            <Icon name="md-cart" size={30} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      ),
+    };
+  }
   constructor(props) {
     super(props);
     this.state = {
       DATA: {},
-      Categories:{},
-      Products:{},
+      Categories: {},
+      Products: {},
       _isMounted: false,
+      selectedIndex: 0
+
     };
   }
   componentDidMount() {
@@ -38,30 +57,26 @@ export default class Dashboard extends Component {
     this._isMounted = false;
   }
   productsData = () => {
-    
+
     let temp1 = []
     let Products = this.state.DATA.products[0].value.items
-    console.log('Products',Products)
     let temp = Products.map(obj => {
       obj.image = this.APIfiler(obj.custom_attributes, "image");
-      console.log(obj)
       temp1.push(obj)
     })
-    this.setState({ Products },()=>console.log("123456",this.state.Products));
-    
+    this.setState({ Products });
+
   }
   CategoryData = () => {
-    
+
     let temp1 = []
     let Categories = this.state.DATA.categories[0].value.items
-    console.log('Categories',Categories)
     let temp = Categories.map(obj => {
       obj.image = this.APIfiler(obj.custom_attributes, "image");
-      console.log(obj)
       temp1.push(obj)
     })
-    this.setState({ Categories },()=>console.log("123456",this.state.Categories));
-    
+    this.setState({ Categories });
+
   }
   APIfiler(data, key) {
     let image = data.filter(obj => {
@@ -88,16 +103,9 @@ export default class Dashboard extends Component {
         var data = response[1];
         console.log(statusCode);
         if (statusCode == 200) {
-          // let temp1 = []
           let DATA = data
-          
-          // let temp = DATA.slides.map(obj => { obj
-          //   // console.log(obj)
-          //   // temp1.push(obj)
-          // })
-          this._isMounted && this.setState({ DATA },()=>this.CategoryData());
+          this._isMounted && this.setState({ DATA }, () => this.CategoryData());
           this.state.DATA.products && this.productsData()
-          
           console.log('DATA:', DATA)
         } else {
           Snackbar.show({
@@ -110,7 +118,13 @@ export default class Dashboard extends Component {
         console.error(error);
       });
   }
-  
+  setSelectedIndex = event => {
+    const viewSize = event.nativeEvent.layoutMeasurement.width;
+    const contentOffset = event.nativeEvent.contentOffset.x;
+    const selectedIndex = Math.floor(contentOffset / viewSize);
+    this.setState({ selectedIndex })
+  }
+
   Item2({ data }) {
     return (
       <TouchableOpacity
@@ -130,7 +144,7 @@ export default class Dashboard extends Component {
           shadowOpacity: 0.9,
           shadowRadius: 3.84,
           elevation: 5,
-          backgroundColor: '#0002',
+          backgroundColor: '#000',
           borderRadius: 10,
         }}>
           <Image
@@ -139,7 +153,7 @@ export default class Dashboard extends Component {
               height: '100%',
               borderRadius: 10,
             }}
-            defaultSource={require('../Assets/placeholder.png')}
+            defaultSource={require('../../../Assets/placeholder.png')}
             source={{ uri: SLIDERMedia_BASE_URL + data.image }}
           />
         </View>
@@ -167,7 +181,7 @@ export default class Dashboard extends Component {
             shadowOpacity: 0.9,
             shadowRadius: 3.84,
             elevation: 5,
-            backgroundColor: '#0002',
+            backgroundColor: '#000',
             borderRadius: 10,
           }}>
             <Image
@@ -176,10 +190,9 @@ export default class Dashboard extends Component {
                 height: '100%',
                 borderRadius: 10,
               }}
-              defaultSource={require('../Assets/placeholder.png')}
+              defaultSource={require('../../../Assets/placeholder.png')}
               source={{ uri: CATEGORYMEDIA_BASE_URL + data.image }}
             />
-            {console.log(data.image)}
           </View>
         </TouchableOpacity>
         <Text style={{ fontSize: 19, marginHorizontal: 10, fontWeight: 'bold', color: '#0007' }}>{data.name}</Text>
@@ -214,7 +227,7 @@ export default class Dashboard extends Component {
             shadowOpacity: 0.9,
             shadowRadius: 3.84,
             elevation: 5,
-            backgroundColor: '#0002',
+            backgroundColor: '#000',
             borderRadius: 10,
           }}>
             <Image
@@ -223,7 +236,7 @@ export default class Dashboard extends Component {
                 height: '100%',
                 borderRadius: 10,
               }}
-              defaultSource={require('../Assets/placeholder.png')}
+              defaultSource={require('../../../Assets/placeholder.png')}
               source={{ uri: PRODUCTMEDIA_BASE_URL + data.image }}
             />
           </View>
@@ -237,9 +250,9 @@ export default class Dashboard extends Component {
     return (
       <TouchableOpacity>
         <View style={{
-          backgroundColor: 'lightblue', marginLeft: 8, marginVertical: 25, 
+          backgroundColor: 'lightblue', marginLeft: 8, marginVertical: 25,
           padding: 9, borderRadius: 20, minWidth: 100,
-          shadowColor: "#0008",
+          shadowColor: "#0007",
           shadowOffset: {
             width: 0,
             height: 2,
@@ -255,13 +268,14 @@ export default class Dashboard extends Component {
     );
   }
   listFooterView = () => {
-    return <View style={{marginRight:10}}></View>
-   }
+    return <View style={{ marginRight: 10 }}></View>
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps='handled'
           alwaysBounceVertical={false}>
           <View>
@@ -276,16 +290,25 @@ export default class Dashboard extends Component {
               />
             }
             {
-              this.state.DATA.slides && <FlatList
-                pagingEnabled
-                alwaysBounceHorizontal={false}
-                horizontal={true}
-                data={this.state.DATA.slides}
-                renderItem={({ item }) => { return this.Item2({ data: item }); }}
-                keyExtractor={(item, index) => `dashboard1_${index}`}
-                showsHorizontalScrollIndicator={false}
-                ListFooterComponent={this.listFooterView}
-              />
+              this.state.DATA.slides && <View>
+                <FlatList
+                  pagingEnabled
+                  onMomentumScrollEnd={this.setSelectedIndex}
+                  alwaysBounceHorizontal={false}
+                  horizontal={true}
+                  data={this.state.DATA.slides}
+                  renderItem={({ item }) => { return this.Item2({ data: item }); }}
+                  keyExtractor={(item, index) => `dashboard1_${index}`}
+                  showsHorizontalScrollIndicator={false}
+                  ListFooterComponent={this.listFooterView}
+                />
+                <View style={styles.circleBox}>{this.state.DATA.slides.map((image, i) =>
+                  <View
+                    style={[styles.whiteCircle, { opacity: i === this.state.selectedIndex ? 1 : 0.5 }]}
+                    key={`${i}+${image}`}
+                  />
+                )}</View>
+              </View>
             }
             {
               this.state.DATA.categories && <Text style={{ fontSize: 20, marginHorizontal: 10, fontWeight: '700', paddingTop: 30 }}>
@@ -335,14 +358,14 @@ export default class Dashboard extends Component {
                 ListFooterComponent={this.listFooterView}
               />
             }
-            <View style={{marginBottom:15}}></View>
+            <View style={{ marginBottom: 15 }}></View>
           </View>
         </ScrollView>
       </View>
     )
   }
 }
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: "#ffffff",
@@ -353,4 +376,21 @@ const styles = {
   header: {
     fontSize: 16,
   },
-}
+  circleBox: {
+    position: 'absolute',
+    bottom: -15,
+    height: 10,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  whiteCircle: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    margin: 5,
+    backgroundColor: '#000'
+  },
+});

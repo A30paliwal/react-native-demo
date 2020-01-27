@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AppContainer from './Components/navigation';
+import AppContainer from './src/Components/NavigationHandler/navigation';
 import{SafeAreaProvider} from 'react-native-safe-area-context';
 export default class App extends Component {
   

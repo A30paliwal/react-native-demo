@@ -4,18 +4,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import Login from './login';
-import Register from './register';
-import Dashboard from './dashboard';
-import Categories from './categories';
-import FilterModal from './filter';
-import MyOrders from './myOrders';
-import Wishlist from './wishlist';
-import Account from './account';
-import Settings from './settings';
-import Products from './products';
-import SideMenu from './sidemenu';
-import SplashScreen from './splash';
+import Login from '../../Screens/LoginModule/LoginScreen';
+import Register from '../../Screens/LoginModule/RegisterScreen';
+import Dashboard from '../../Screens/DashboardModule/DashboardScreen';
+import Categories from '../../Screens/SideBarModule/CategoriesScreen';
+import FilterModal from '../../Screens/DashboardModule/FilterScreen';
+import MyOrders from '../../Screens/SideBarModule/OrdersScreen';
+import Wishlist from '../../Screens/SideBarModule/WishlistScreen';
+import Account from '../../Screens/SideBarModule/AccountScreen';
+import Settings from '../../Screens/SideBarModule/SettingScreen';
+import Products from '../../Screens/DashboardModule/ProductScreen';
+import SideMenu from '../../Screens/SideBarModule/SideMenuScreen';
+import SplashScreen from '../../Screens/LoginModule/SplashScreen';
+import Cart from '../../Screens/DashboardModule/CartScreen'
 
 const AuthNavigator = createStackNavigator(
     {
@@ -51,9 +52,27 @@ const DashboardStackNavigator = createStackNavigator(
                 headerTitleStyle: {
                     fontSize: 22
                 },
-                headerRight: () => (
-                    headerRightView()
-                )
+                // headerRight: () => (
+                //     headerRightView()
+                // )
+            }
+        },
+        cart: {
+            screen:Cart,
+            navigationOptions: {
+                title: "CART",
+                headerShown: true,
+                headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: '#FE6963',
+                },
+                headerTitleAlign: 'center',
+                headerTitleStyle: {
+                    fontSize: 22
+                },
+                // headerRight: () => (
+                //     headerRightView()
+                // )
             }
         }
     },
@@ -165,14 +184,14 @@ const ProductStackNavigator = createStackNavigator(
         }
     }
 );
-const CartStackNavigator = createStackNavigator(
+const WishlistStackNavigator = createStackNavigator(
     {
         wishlist: Wishlist
     },
     {
         defaultNavigationOptions: ({ navigation }) => {
             return {
-                title: "MY CART",
+                title: "WISHLIST",
                 headerTintColor: "#fff",
                 headerStyle: {
                     backgroundColor: '#FE6963'
@@ -184,7 +203,7 @@ const CartStackNavigator = createStackNavigator(
                     <Icon
                         style={{ paddingLeft: 10 }}
                         onPress={() => navigation.openDrawer()}
-                        name="md-arrow-back"
+                        name="md-menu"
                         size={30}
                         color="#fff"
                     />
@@ -227,7 +246,7 @@ const AppDrawerNavigator = createDrawerNavigator(
             }
         },
         Wishlist: {
-            screen: CartStackNavigator,
+            screen: WishlistStackNavigator,
             navigationOptions: {
                 headerShown: true,
             }

@@ -38,7 +38,7 @@ export default class SplashScreen extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <Image style={styles.logo}
-                    source={require('../Assets/icon.png')}>
+                    source={require('../../../Assets/icon.png')}>
                 </Image>
                 <Text style={styles.title}>mobi
                     <Text style={{ color: '#4784A2' }}>Channel</Text>

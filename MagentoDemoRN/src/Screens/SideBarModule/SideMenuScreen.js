@@ -112,7 +112,7 @@ class SideMenu extends Component {
               borderWidth: 3,
               borderColor: "red"
             }}
-              source={require('../Assets/splash.png')}
+              source={require('../../../Assets/splash.png')}
             />
             {this.state.userDetails &&
               <View style={{ paddingHorizontal: 12, paddingBottom: 10 }}>
