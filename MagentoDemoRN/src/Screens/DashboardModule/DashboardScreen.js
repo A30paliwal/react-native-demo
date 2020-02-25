@@ -123,6 +123,7 @@ export default class Dashboard extends Component {
     const contentOffset = event.nativeEvent.contentOffset.x;
     const selectedIndex = Math.floor(contentOffset / viewSize);
     this.setState({ selectedIndex })
+    console.log(this.state.selectedIndex);
   }
 
   Item2({ data }) {
@@ -163,7 +164,45 @@ export default class Dashboard extends Component {
   Item3({ data }) {
     return (
       <View>
-
+        <TouchableOpacity
+          activeOpacity={1}
+          style={{
+            backgroundColor: '#fff',
+            width: Dimensions.get('window').width / 1.3,
+            height: (Dimensions.get('window').width / 2.3) * 1.39,
+            padding: 10,
+          }}
+        >
+          <View style={{
+            shadowColor: "#0007",
+            shadowOffset: {
+              width: 0,
+              height: 3,
+            },
+            shadowOpacity: 0.9,
+            shadowRadius: 3.84,
+            elevation: 5,
+            backgroundColor: '#000',
+            borderRadius: 10,
+          }}>
+            <Image
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: 10,
+              }}
+              defaultSource={require('../../../Assets/placeholder.png')}
+              source={{ uri: CATEGORYMEDIA_BASE_URL + data.image }}
+            />
+          </View>
+        </TouchableOpacity>
+        <Text ellipsizeMode='tail' style={{ fontSize: 19, marginHorizontal: 10, fontWeight: 'bold', color: '#0007' }}>{data.name}</Text>
+      </View>
+    );
+  }
+  Item4({ data }) {
+    return (
+      <View style={{ flexDirection: 'column' }}>
         <TouchableOpacity
           activeOpacity={1}
           style={{
@@ -191,58 +230,22 @@ export default class Dashboard extends Component {
                 borderRadius: 10,
               }}
               defaultSource={require('../../../Assets/placeholder.png')}
-              source={{ uri: CATEGORYMEDIA_BASE_URL + data.image }}
-            />
-          </View>
-        </TouchableOpacity>
-        <Text style={{ fontSize: 19, marginHorizontal: 10, fontWeight: 'bold', color: '#0007' }}>{data.name}</Text>
-      </View>
-    );
-  }
-  Item4({ data }) {
-    return (
-      <View>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={{
-            backgroundColor: '#fff',
-            width: Dimensions.get('window').width / 1.3,
-            height: (Dimensions.get('window').width / 2.3) * 1.39,
-            padding: 10,
-          }}>
-          <TouchableOpacity style={{ position: 'absolute', top: 5, left: 5, padding: 10 }}>
-            <Icon
-              style={{}}
-              name="md-heart"
-              size={20}
-              color={(data.extension_attributes.is_wishlist_product) ? "#fff" : "red"}
-            />
-          </TouchableOpacity>
-          <View style={{
-            shadowColor: "#0007",
-            shadowOffset: {
-              width: 0,
-              height: 3,
-            },
-            shadowOpacity: 0.9,
-            shadowRadius: 3.84,
-            elevation: 5,
-            backgroundColor: '#000',
-            borderRadius: 10,
-          }}>
-            <Image
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 10,
-              }}
-              defaultSource={require('../../../Assets/placeholder.png')}
               source={{ uri: PRODUCTMEDIA_BASE_URL + data.image }}
             />
           </View>
         </TouchableOpacity>
-        <Text style={{ fontSize: 19, marginHorizontal: 10, fontWeight: 'bold', color: '#0007' }}>{data.name}</Text>
+        <Text ellipsizeMode='tail' style={{ fontSize: 19, marginHorizontal: 10, fontWeight: 'bold', color: '#0007' }}>{data.name}</Text>
+        <TouchableOpacity style={{ position: 'absolute', top: 5, left: 8, padding: 10 }}>
+          <Icon
+            style={{}}
+            name="md-heart"
+            size={20}
+            color={(data.extension_attributes.is_wishlist_product) ? "#fff" : "red"}
+          />
+        </TouchableOpacity>
       </View>
+
+
     );
   }
   Item({ data }) {
@@ -262,7 +265,6 @@ export default class Dashboard extends Component {
           elevation: 5,
         }}>
           {<Text style={{ alignSelf: 'center', color: 'white' }}>{data.name}</Text>}
-
         </View>
       </TouchableOpacity>
     );
@@ -304,7 +306,8 @@ export default class Dashboard extends Component {
                 />
                 <View style={styles.circleBox}>{this.state.DATA.slides.map((image, i) =>
                   <View
-                    style={[styles.whiteCircle, { opacity: i === this.state.selectedIndex ? 1 : 0.5 }]}
+                    // style={[styles.whiteCircle, { width: i === this.state.selectedIndex ? 15 : 8, }]}  // for android design
+                    style={[styles.whiteCircle, { opacity: i === this.state.selectedIndex ? 1 : 0.5, width: 8, }]} // iOS design
                     key={`${i}+${image}`}
                   />
                 )}</View>
@@ -387,7 +390,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   whiteCircle: {
-    width: 8,
+
     height: 8,
     borderRadius: 4,
     margin: 5,

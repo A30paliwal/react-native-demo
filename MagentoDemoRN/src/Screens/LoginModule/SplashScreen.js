@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
     View,
     Text,
     Image,
-} from 'react-native'
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-community/async-storage';
-
 
 export default class SplashScreen extends Component {
     performTimeConsumingTask = async() => {
